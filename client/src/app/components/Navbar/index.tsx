@@ -1,18 +1,27 @@
 import React from 'react';
-import { Settings, Search } from 'lucide-react';
+import { Settings, Search, Moon, Sun } from 'lucide-react';
 import Image from 'next/image';
 import Logo from '../../assets/abc.svg';
+import LogoWhite from '../../assets/abcWhite.svg'
 import Link from 'next/link';
+import { useAppDispatch, useAppSelector } from '../../redux';
+import { setIsDarkMode } from '@/state';
 
-const Index = () => {
+const Navbar = () => {
+  const dispatch = useAppDispatch();
+  // const isSidebarCollapsed = useAppSelector((state) => state.global.isSidebarCollapsed);
+  const isDarkMode = useAppSelector((state) => state.global.isDarkMode);
+
   return (
     <div className="flex items-center justify-between bg-white px-4 py-3 dark:bg-black">
       {/* Logo */}
-      <Link
-        href="/"
-      >
+      <Link href="/">
       <div className="flex items-center">
+      {isDarkMode ? (
+        <Image src={LogoWhite} alt="LogoWhite" width={150} height={150} className="mr-[30px]" />
+      ) : (
         <Image src={Logo} alt="Logo" width={150} height={150} className="mr-[30px]" />
+      )}
       </div>
       </Link>
       {/* Search Bar */}
@@ -29,7 +38,30 @@ const Index = () => {
 
       {/* Icons para o usuario*/}
       <div className="flex items-center ml-auto">
-        <Link href="/settings" className="h-min w-min rounded p-2 hover:bg-gray-100">
+        <button
+          onClick={() => {
+            dispatch(setIsDarkMode(!isDarkMode));
+          }}
+
+          className={
+            isDarkMode
+            ? "rounded p-2 hover:bg-gray-700" 
+            : "rounded p-2 hover:bg-gray-100"}
+        >
+          {isDarkMode ? (
+            <Sun className="h-5 w-5 cursor-pointer dark:text-white" />
+          ) : (
+            <Moon className="h-5 w-5 cursor-pointer dark:text-white" />
+          )}
+        </button>
+        <Link 
+        href="/settings" 
+        className={
+          isDarkMode
+            ? "h-min w-min rounded p-2 hover:bg-gray-700" 
+            : "h-min w-min rounded p-2 hover:bg-gray-100"
+          }
+        >
           <Settings className="h-5 w-6 cursor-pointer dark:text-white" />
         </Link>
         <div className="ml-2 min-h-[2em] w-[0.1rem] bg-gray-200 hidden md:inline-block"></div>
@@ -38,4 +70,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default Navbar;
