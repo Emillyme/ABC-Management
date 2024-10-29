@@ -1,17 +1,20 @@
 import React from 'react';
 import { Settings, Search } from 'lucide-react';
-import Link from 'next/link';
 import Image from 'next/image';
 import Logo from '../../assets/abc.svg';
+import Link from 'next/link';
 
 const Index = () => {
   return (
     <div className="flex items-center justify-between bg-white px-4 py-3 dark:bg-black">
       {/* Logo */}
+      <Link
+        href="/"
+      >
       <div className="flex items-center">
         <Image src={Logo} alt="Logo" width={150} height={150} className="mr-[30px]" />
       </div>
-
+      </Link>
       {/* Search Bar */}
       <div className="flex items-center gap-8">
         <div className="relative flex h-min w-[200px]">
