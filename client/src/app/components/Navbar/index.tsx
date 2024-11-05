@@ -1,44 +1,43 @@
-"use client"
+"use client";
 import React from 'react';
 import { Settings, Search, Moon, Sun, Menu } from 'lucide-react';
 import Image from 'next/image';
 import Logo from '../../assets/abc.svg';
-import LogoWhite from '../../assets/abcWhite.svg'
+import LogoWhite from '../../assets/abcWhite.svg';
 import Link from 'next/link';
-import { useAppDispatch, useAppSelector } from '../../redux';
-import { setIsDarkMode, setIsSidebarCollapsed } from '@/state';
+import useStore from '../../store'; 
 
 const Navbar = () => {
-  const dispatch = useAppDispatch();
-  const isSidebarCollapsed = useAppSelector((state) => state.global.isSidebarCollapsed);
-  const isDarkMode = useAppSelector((state) => state.global.isDarkMode);
+  const { isDarkMode, isSidebarCollapsed, toggleDarkMode, toggleSidebar } = useStore((state) => ({
+    isDarkMode: state.isDarkMode,
+    isSidebarCollapsed: state.isSidebarCollapsed,
+    toggleDarkMode: state.toggleDarkMode,
+    toggleSidebar: state.toggleSidebar,
+  }));
 
   return (
     <div className="flex items-center justify-between bg-white px-4 py-3 dark:bg-black">
       <div className="flex items-center gap-4">
         {/* MENU HAMBURGUER */}
         {!isSidebarCollapsed ? null : (
-          <button
-            onClick={() => dispatch(setIsSidebarCollapsed(!isSidebarCollapsed))}
-          >
+          <button onClick={toggleSidebar}>
             <Menu className="h-8 w-8 dark:text-white" />
           </button>
         )}
 
         {/* Logo */}
         <Link href="/">
-            <Image
-              src={isDarkMode ? LogoWhite : Logo}
-              alt="Logo"
-              width={150}
-              height={150}
-              className="mr-[13px]"
-            />
+          <Image
+            src={isDarkMode ? LogoWhite : Logo}
+            alt="Logo"
+            width={150}
+            height={150}
+            className="mr-[13px]"
+          />
         </Link>
 
         {/* Search Bar */}
         <div className="flex items-center gap-8">
-          
           <div className="relative flex h-min w-[200px]">
             <Search className="absolute left-[4px] top-1/2 mr-2 h-5 w-5 -translate-y-1/2 transform cursor-pointer dark:text-white" />
             <input
@@ -49,10 +48,11 @@ const Navbar = () => {
           </div>
         </div>
       </div>
+      
       {/* Icons */}
       <div className="flex items-center">
         <button
-          onClick={() => dispatch(setIsDarkMode(!isDarkMode))}
+          onClick={toggleDarkMode}
           className={
             isDarkMode
               ? `rounded p-2 dark:hover:bg-gray-700`
