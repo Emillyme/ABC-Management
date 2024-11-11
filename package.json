@@ -1,5 +1,8 @@
 {
   "devDependencies": {
     "tailwind-merge": "^2.5.4"
+  },
+  "dependencies": {
+    "zustand": "^5.0.1"
   }
 }
