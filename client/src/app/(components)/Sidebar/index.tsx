@@ -30,8 +30,10 @@ const Sidebar = ({ collapsed, toggleSidebar }: { collapsed: boolean, toggleSideb
   const { isDarkMode, toggleDarkMode } = useStore();  // Acessa Zustand
   const [showProjects, setShowProjects] = useState(true)
 
-  const sidebarClassNames = `fixed flex flex-col h-[100%] justify-between shadow-xl
-  transition-all duration-300 h-full z-40 dark:bg-black overflow-y-auto bg-white ${collapsed ? "w-0 hidden" : "w-64"}`;  
+  const sidebarClassNames = `fixed flex flex-col h-full justify-between shadow-xl
+  transition-transform duration-300 ease-in-out z-40 dark:bg-black bg-white
+  ${collapsed ? "-translate-x-full opacity-0" : "translate-x-0 opacity-100"}`;
+
 
   return (
     <div className={sidebarClassNames}>
