@@ -10,3 +10,9 @@ npx prisma migrate dev --name init
 npm run seed
 # Executa o script de "seed" configurado no projeto, que popula o banco de dados com dados iniciais para testes ou uso inicial.
 
+
+COMANDO PARA FAZER COM QUE OS IDs VÃO PARTIR DO ULTIMO NUMERO:
+SELECT setval(pg_get_serial_sequence('"[DATA_MODEL_NAME_HERE]"', 'id'), coalesce(max(id)+1, 1), false) FROM "[DATA_MODEL_NAME_HERE]";
+
+ir no query tool la encima e colar isso na Query!!!
+

@@ -5,6 +5,8 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 // Routes imports
+import projectRoutes from "./routes/projectRoutes";
+import taskRoutes from "./routes/taskRoutes";
 
 // Configurações
 dotenv.config();
@@ -21,6 +23,9 @@ app.use(cors());
 app.get('/', (req, res) => {
     res.send('Hello World!');
 })
+
+app.use("/projects", projectRoutes)
+app.use("/tasks",  taskRoutes)
 
 // Servidor
 const port = process.env.PORT || 3000;
