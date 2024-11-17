@@ -1,0 +1,123 @@
+// Arquivo de schema do Prisma para definir o modelo de dados e gerar o Prisma Client.
+
+// Gera o Prisma Client para uso em Node.js
+generator client {
+  provider      = "prisma-client-js" // Define o provedor como Prisma Client para JavaScript
+  binaryTargets = ["native", "rhel-openssl-3.0.x"] // Alvo para binários específicos do ambiente
+}
+
+// Define a fonte de dados do banco de dados
+datasource db {
+  provider = "postgresql"       // Provedor do banco de dados (PostgreSQL neste caso)
+  url      = env("DATABASE_URL") // URL de conexão definida em variáveis de ambiente
+}
+
+// Define o modelo "User" que representa usuários no sistema
+model User {
+  userId            Int     @id @default(autoincrement()) // Chave primária autoincrementada
+  cognitoId         String  @unique                      // ID único do Cognito (para integração com AWS Cognito)
+  username          String  @unique                      // Nome de usuário único
+  profilePictureUrl String?                              // URL opcional da foto de perfil
+  teamId            Int?                                 // ID opcional do time ao qual pertence
+
+  // Relacionamentos com outras tabelas
+  authoredTasks   Task[]           @relation("TaskAuthor")  // Tarefas criadas pelo usuário
+  assignedTasks   Task[]           @relation("TaskAssignee") // Tarefas atribuídas ao usuário
+  taskAssignments TaskAssignment[]                          // Assignments relacionados ao usuário
+  attachments     Attachment[]                              // Arquivos enviados pelo usuário
+  comments        Comment[]                                 // Comentários feitos pelo usuário
+  team            Team?            @relation(fields: [teamId], references: [id]) // Time do usuário
+}
+
+// Define o modelo "Team" que representa equipes no sistema
+model Team {
+  id                   Int           @id @default(autoincrement()) // Chave primária autoincrementada
+  teamName             String                                      // Nome do time
+  productOwnerUserId   Int?                                        // ID opcional do Product Owner
+  projectManagerUserId Int?                                        // ID opcional do Gerente de Projetos
+
+  projectTeams         ProjectTeam[]                              // Relacionamento com times de projeto
+  user                 User[]                                     // Usuários pertencentes ao time
+}
+
+// Define o modelo "Project" que representa projetos
+model Project {
+  id           Int           @id @default(autoincrement()) // Chave primária autoincrementada
+  name         String                                      // Nome do projeto
+  description  String?                                     // Descrição opcional do projeto
+  startDate    DateTime?                                   // Data opcional de início
+  endDate      DateTime?                                   // Data opcional de término
+
+  tasks        Task[]                                     // Relacionamento com tarefas do projeto
+  projectTeams ProjectTeam[]                              // Relacionamento com times do projeto
+}
+
+// Relaciona times com projetos (muitos-para-muitos)
+model ProjectTeam {
+  id        Int     @id @default(autoincrement()) // Chave primária autoincrementada
+  teamId    Int                                // ID do time
+  projectId Int                                // ID do projeto
+  
+  team      Team    @relation(fields: [teamId], references: [id]) // Relacionamento com Team
+  project   Project @relation(fields: [projectId], references: [id]) // Relacionamento com Project
+}
+
+// Define o modelo "Task" que representa tarefas
+model Task {
+  id             Int       @id @default(autoincrement()) // Chave primária autoincrementada
+  title          String                                 // Título da tarefa
+  description    String?                                // Descrição opcional
+  status         String?                                // Status da tarefa (opcional)
+  priority       String?                                // Prioridade da tarefa (opcional)
+  tags           String?                                // Tags relacionadas à tarefa (opcional)
+  startDate      DateTime?                              // Data opcional de início
+  dueDate        DateTime?                              // Data opcional de conclusão
+  points         Int?                                   // Pontos para a tarefa (opcional)
+  projectId      Int                                   // ID do projeto ao qual pertence
+  authorUserId   Int                                   // ID do autor da tarefa
+  assignedUserId Int?                                  // ID do usuário atribuído (opcional)
+
+  // Relacionamentos
+  project         Project          @relation(fields: [projectId], references: [id]) // Projeto relacionado
+  author          User             @relation("TaskAuthor", fields: [authorUserId], references: [userId]) // Autor
+  assignee        User?            @relation("TaskAssignee", fields: [assignedUserId], references: [userId]) // Usuário atribuído
+  taskAssignments TaskAssignment[] // Assignments relacionados à tarefa
+  attachments     Attachment[]     // Anexos da tarefa
+  comments        Comment[]        // Comentários na tarefa
+}
+
+// Define "TaskAssignment", relaciona usuários com tarefas
+model TaskAssignment {
+  id     Int @id @default(autoincrement()) // Chave primária autoincrementada
+  userId Int                              // ID do usuário
+  taskId Int                              // ID da tarefa
+
+  // Relacionamentos
+  user User @relation(fields: [userId], references: [userId]) // Usuário relacionado
+  task Task @relation(fields: [taskId], references: [id])     // Tarefa relacionada
+}
+
+// Define "Attachment", representa arquivos anexados às tarefas
+model Attachment {
+  id           Int     @id @default(autoincrement()) // Chave primária autoincrementada
+  fileURL      String                               // URL do arquivo
+  fileName     String?                              // Nome opcional do arquivo
+  taskId       Int                                  // ID da tarefa relacionada
+  uploadedById Int                                  // ID do usuário que enviou
+
+  // Relacionamentos
+  task       Task @relation(fields: [taskId], references: [id])         // Tarefa relacionada
+  uploadedBy User @relation(fields: [uploadedById], references: [userId]) // Usuário que enviou
+}
+
+// Define "Comment", representa comentários nas tarefas
+model Comment {
+  id     Int    @id @default(autoincrement()) // Chave primária autoincrementada
+  text   String                             // Texto do comentário
+  taskId Int                                // ID da tarefa relacionada
+  userId Int                                // ID do usuário que comentou
+
+  // Relacionamentos
+  task Task @relation(fields: [taskId], references: [id])     // Tarefa relacionada
+  user User @relation(fields: [userId], references: [userId]) // Usuário que comentou
+}

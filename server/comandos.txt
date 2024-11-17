@@ -1,0 +1,12 @@
+1. 
+npx prisma generate
+# Gera o Prisma Client com base no arquivo schema.prisma, criando métodos para interagir com o banco de dados no código.
+
+2. 
+npx prisma migrate dev --name init
+# Aplica as migrações no banco de dados de desenvolvimento com base no schema atual. O --name init dá um nome para a migração (neste caso, "init").
+
+3. 
+npm run seed
+# Executa o script de "seed" configurado no projeto, que popula o banco de dados com dados iniciais para testes ou uso inicial.
+
