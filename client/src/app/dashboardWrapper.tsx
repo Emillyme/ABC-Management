@@ -3,7 +3,7 @@ import {useEffect, useState} from 'react';
 import Navbar from "@/app/(components)/Navbar";
 import Sidebar from "@/app/(components)/Sidebar";
 import LoadingSpinner from "@/app/(components)/LoadingSpinner";
-import useStore from '@/app/hooks/useStore';
+import useStore from '@/app/state/useStore';
 
 const DashboardWrapper = ({ children }: { children: React.ReactNode }) => {
   const { isDarkMode, isSidebarCollapsed, toggleDarkMode, toggleSidebar } = useStore();

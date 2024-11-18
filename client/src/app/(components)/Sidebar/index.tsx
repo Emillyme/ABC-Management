@@ -24,7 +24,7 @@ import { usePathname } from "next/navigation";
 import LogoWhite from '../../../../public/abcWhite.svg';
 import Logo from '../../../../public/abc.svg';
 import React, { useState } from "react";
-import useStore from '../../hooks/useStore';
+import useStore from '../../state/useStore';
 
 const Sidebar = ({ collapsed, toggleSidebar }: { collapsed: boolean, toggleSidebar: () => void }) => {
   const { isDarkMode, toggleDarkMode } = useStore();  // Acessa Zustand

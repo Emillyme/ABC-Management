@@ -1,6 +1,6 @@
 import React from "react";
 import { Menu, Moon, Search, Settings, Sun, User } from "lucide-react";
-import  useStore  from "@/app/hooks/useStore";
+import  useStore  from "@/app/state/useStore";
 // import { useAppDispatch, useAppSelector } from "@/app/redux";
 // import { setIsDarkMode, setIsSidebarCollapsed } from "@/state";
 // import { useGetAuthUserQuery } from "@/state/api";
