@@ -14,5 +14,9 @@ npm run seed
 COMANDO PARA FAZER COM QUE OS IDs VÃO PARTIR DO ULTIMO NUMERO:
 SELECT setval(pg_get_serial_sequence('"[DATA_MODEL_NAME_HERE]"', 'id'), coalesce(max(id)+1, 1), false) FROM "[DATA_MODEL_NAME_HERE]";
 
+exemplos:
+SELECT setval(pg_get_serial_sequence('"Task"', 'id'), coalesce(max(id)+1, 1), false) FROM "Task";
+SELECT setval(pg_get_serial_sequence('"Project"', 'id'), coalesce(max(id)+1, 1), false) FROM "Project";
+
 ir no query tool la encima e colar isso na Query!!!
 
