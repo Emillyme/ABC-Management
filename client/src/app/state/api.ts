@@ -153,3 +153,5 @@ export const useApiStore = create<ApiStore>((set) => ({
     }
   },
 }));
+
+export default useApiStore;
