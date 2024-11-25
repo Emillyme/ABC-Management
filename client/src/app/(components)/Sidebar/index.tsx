@@ -6,6 +6,7 @@ import {
   AlertTriangle,
   Briefcase,
   ChevronDown,
+  Album,
   ChevronUp,
   Home,
   Layers3,
@@ -79,7 +80,7 @@ const Sidebar = ({ collapsed, toggleSidebar }: { collapsed: boolean, toggleSideb
         {showProjects && projects?.map((project) => (
           <SidebarLink
             key={project.id}
-            icon={Briefcase}
+            icon={Album}
             label={project.name}
             href={`/projects/${project.id}`}
           />
