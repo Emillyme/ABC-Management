@@ -2,6 +2,7 @@
 
 import React, { useState, use } from 'react'
 import ProjectHeader from "@/app/projects/ProjectHeader"
+import Board from '../BoardView'
 
 type Props = {
     params: {id: string}
@@ -13,12 +14,12 @@ const Project = ({ params }: { params: Promise<{ id: string }> }) => {
   const [isModalNewTaskOpen, setIsModalNewTaskOpen] = useState(false);
 
   return (
-    <>
-        <ProjectHeader activeTab={activeTab} setActiveTab={setActiveTab} />
-        {/* { activeTab === "Board" && (
-            <Board/>
-        )} */}
-    </>
+    <div>
+      <ProjectHeader activeTab={activeTab} setActiveTab={setActiveTab} />
+      {activeTab === "Board" && (
+        <Board id={id} setIsModalNewTaskOpen={setIsModalNewTaskOpen} />
+      )}
+  </div>
   )
 }
 

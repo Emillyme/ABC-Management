@@ -23,6 +23,11 @@ export interface Task {
   projectId: number;
   authorUserId?: number;
   assignedUserId?: number;
+
+  author?: User;
+  assignee?: User;
+  comments?: Comment[];
+  attachments?: Attachment[];
 }
 
 export interface User {
