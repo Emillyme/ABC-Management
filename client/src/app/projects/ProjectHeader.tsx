@@ -9,6 +9,7 @@ import {
   Share2,
   Table,
 } from "lucide-react";
+import { useApiStore } from "@/app/state/api";
 
 type Props = {
   activeTab: string;
